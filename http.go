@@ -30,7 +30,7 @@ func AddRoute(method, path, role string, route RouteFunc) {
 	routes = append(routes, Route{role, path, method, route})
 }
 
-func Listen(cfg Gettable, access Accessibly) chan bool {
+func Listen(cfg Gettable, access Accessibly) (chan bool, *fiber.App) {
 	srv := fiber.New(fiber.Config{
 		DisableStartupMessage: true,
 		BodyLimit:             4 * 1024 * 1024,
@@ -59,5 +59,5 @@ func Listen(cfg Gettable, access Accessibly) chan bool {
 		log.Info("server stopped")
 		sigs <- true
 	}()
-	return sigs
+	return sigs, srv
 }
