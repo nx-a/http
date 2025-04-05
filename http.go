@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/pprof"
 )
 
 type Gettable interface {
@@ -35,6 +36,7 @@ func Listen(cfg Gettable, access Accessibly) (chan bool, *fiber.App) {
 		DisableStartupMessage: true,
 		BodyLimit:             4 * 1024 * 1024,
 	})
+	srv.Use(pprof.New())
 	srv.Use(cors.New())
 	srv.Use(compress.New())
 	srv.Static("/", "./static")
